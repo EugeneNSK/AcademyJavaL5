@@ -1,4 +1,4 @@
-package com.jcourse.zonov.systemfiles;
+package com.jcourse.zonov.httpserver;
 
 import java.io.File;
 import java.util.Comparator;
@@ -15,7 +15,7 @@ public class FileComparator implements Comparator <File>{
         if (dir1&&!dir2){
             return -1;
         }
-        return f1.getName().toUpperCase().compareTo(f2.getName().toUpperCase());
+        return f1.getName().compareTo(f2.getName());
     }
 
 
