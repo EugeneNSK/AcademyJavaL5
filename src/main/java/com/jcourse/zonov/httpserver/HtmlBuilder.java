@@ -2,19 +2,18 @@ package com.jcourse.zonov.httpserver;
 
 import java.io.*;
 import java.net.URLEncoder;
-import java.nio.file.Paths;
 import java.util.List;
 
 public class HtmlBuilder {
 
     public static StringBuffer toHtmlFile(List<File> list) throws IOException {
 
+        String parentDir = list.get(0).getParentFile().getParent();
+        System.out.println("parentDir: " + parentDir);
 
         String localDir = list.get(0).getParent();
         System.out.println("localDir: " + localDir);
 
-        String parentDir = list.get(0).getParentFile().getParent();
-        System.out.println("parentDir: " + parentDir);
 
 //        File file = new File(localDir, "index.html");
         File file = new File( "index.html");
