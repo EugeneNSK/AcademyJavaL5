@@ -13,6 +13,8 @@ import java.util.List;
 public class Client3 implements Runnable{
 
     Socket socket;
+    Reader in;
+    OutputStream out;
 
     public Client3(Socket s) {
         this.socket = s;
@@ -20,9 +22,9 @@ public class Client3 implements Runnable{
 
     @Override
     public void run() {
-        try (
-                Reader in = new InputStreamReader(new BufferedInputStream(socket.getInputStream()));
-                OutputStream out = socket.getOutputStream()){
+        try {
+                in = new InputStreamReader(new BufferedInputStream(socket.getInputStream()));
+                out = socket.getOutputStream();
 
         StringBuffer sbWeb = new StringBuffer();
         StringBuffer sbHtml;
@@ -83,15 +85,26 @@ public class Client3 implements Runnable{
                 StreamWriter.write(out,file); //пишем в поток файл
 
             }else if(!file.getName().equals("favicon.ico")){
-                StreamWriter.write(out, "404 Not Found"); //пишем в поток ошибку 404
+//                StreamWriter.write(out, "404 Not Found"); //пишем в поток ошибку 404
+                args[9].substring(8);
             }
 
 
             out.flush();
             System.out.println("*********************");
 
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        } catch (Exception ex) {
+//            e.printStackTrace();
+            StreamWriter.write(out, ex); //пишем в поток исключение
+        }
+        finally {
+            try {
+                in.close();
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
 
