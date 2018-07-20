@@ -8,21 +8,26 @@ public class HtmlBuilder {
 
     public static StringBuffer toHtmlFile(List<File> list) throws IOException {
 
-        String parentDir = list.get(0).getParentFile().getParent();
-        System.out.println("parentDir: " + parentDir);
-
         String localDir = list.get(0).getParent();
         System.out.println("localDir: " + localDir);
 
+        String parentDir;
+        if (list.get(0).getParentFile().getParent()!=null) {
+            parentDir = list.get(0).getParentFile().getParent();
+            System.out.println("parentDir: " + parentDir);
+        }
+        else {
+            parentDir = localDir;
+        }
 
-//        File file = new File(localDir, "index.html");
-        File file = new File( "index.html");
+
+        File file = new File(localDir,"index.html");
         StringBuffer sb = new StringBuffer();
 
 //        if (!file.exists()){
 //            System.out.println("файла не существует, генерируем");
 
-            try (Writer out = new OutputStreamWriter(new FileOutputStream(file),"CP1251")) {
+            try (Writer out = new OutputStreamWriter(new FileOutputStream(file),"UTF-8")) {
 
                 sb.append("<html>" + "\n");
                 sb.append("<head>" + "\n");
@@ -35,7 +40,7 @@ public class HtmlBuilder {
                 sb.append("<table border = 0>" + "\n");
 
                 sb.append("<tr>" + "\n");
-                sb.append("<td><a href=" + "\"" + URLEncoder.encode(parentDir, "UTF-8")  + "\\" + "\"" + "><b>[Родительский каталог]</b></a></td>" + "\n");
+                sb.append("<td><a href=" +  URLEncoder.encode(parentDir, "UTF-8") + "><b>[Родительский каталог]</b></a></td>" + "\n");
                 sb.append("</tr>" + "\n");
 
                 sb.append("<td><b>-----------</b></td>" + "\n");

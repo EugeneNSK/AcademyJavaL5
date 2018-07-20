@@ -1,5 +1,6 @@
 package com.jcourse.zonov.httpserver;
 
+import com.jcourse.zonov.systemfiles.FileComparator;
 
 import javax.activation.MimetypesFileTypeMap;
 import java.io.*;
@@ -8,11 +9,11 @@ import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.util.*;
 
-public class Client implements Runnable{
+public class Client2 implements Runnable{
 
     Socket socket;
 
-    public Client(Socket s) {
+    public Client2(Socket s) {
         this.socket = s;
         System.out.println("Конструктор: " + socket);
     }
@@ -37,11 +38,10 @@ public class Client implements Runnable{
             String args[] = data.split(" ");
 
             String cmd = args[0].trim().toUpperCase(); //Получили GET
-            System.out.println("Запрашиваемый элемент: " + args[1].substring(1));
 
             String elementName;
             if (!args[1].substring(1).isEmpty()){
-                elementName = URLDecoder.decode(args[1]);
+                elementName = URLDecoder.decode(args[1].substring(1));
                 System.out.println("Элемент не пуст: " + elementName);
             }
             else {
@@ -53,23 +53,21 @@ public class Client implements Runnable{
 
             File file = new File(elementName);
             File [] files = file.listFiles();
-            String outputString="";
-
 
             if(cmd.equals("GET")&&file.isDirectory()) {
-                System.out.println("=======Зашли в блок условий========");
-
 
                 List<File> listFiles = new ArrayList<>(Arrays.asList(files));
-                Collections.sort(listFiles, Comparator.comparing(o->!o.isDirectory()));
+                Collections.sort(listFiles, new FileComparator());
                 sbHtml = HtmlBuilder.toHtmlFile(listFiles);
+                String outputString = sbHtml.toString();
+                out.write(("HTTP/1.0 200 OK\r\n").getBytes());
+                out.write(("Content-Type: text/html;charset=utf-8\r\n").getBytes());
+                out.write(("Content-Length: "+outputString.length()+"\r\n").getBytes());
+                out.write(("\r\n").getBytes());
+                out.write(outputString.getBytes());
 
-                System.out.println("=======Вышли из в блока условий========");
+            }else if(file.isFile()){
 
-                // пишем ответ
-                outputString = sbHtml.toString();
-
-            }else if(!file.isDirectory()&&file.isFile()){
                 String contType = new MimetypesFileTypeMap().getContentType(file);
                 System.out.println("Определяем contType: " + contType);
                 out.write(("HTTP/1.0 200 OK\r\n").getBytes());
@@ -77,26 +75,7 @@ public class Client implements Runnable{
                 out.write(("Content-Length: "+file.length()+"\r\n").getBytes());
                 out.write(("\r\n").getBytes());
                 Files.copy(file.toPath(),out);
-//                out.write(file.getName().getBytes());
-
             }
-
-//            //пишем статус ответа
-//            out.write("HTTP/1.0 200 OK\r\n");
-//            //минимально необходимые заголовки, тип и длина
-//            out.write("Content-Type: text/html\r\n");
-//            out.write("Content-Length: "+outputString.length()+"\r\n");
-//            //пустая строка отделяет заголовки от тела
-//            out.write("\r\n");
-//            //тело
-//            out.write(outputString);
-
-            out.write(("HTTP/1.0 200 OK\r\n").getBytes());
-            out.write(("Content-Type: text/html;charset=utf-8\r\n").getBytes());
-            out.write(("Content-Length: "+outputString.length()+"\r\n").getBytes());
-            //пустая строка отделяет заголовки от тела
-            out.write(("\r\n").getBytes());
-            out.write(outputString.getBytes());
 
 
             out.flush();

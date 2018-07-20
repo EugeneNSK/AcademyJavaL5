@@ -15,7 +15,7 @@ public class FileComparator implements Comparator <File>{
         if (dir1&&!dir2){
             return -1;
         }
-        return f1.getName().compareTo(f2.getName());
+        return f1.getName().toUpperCase().compareTo(f2.getName().toUpperCase());
     }
 
 

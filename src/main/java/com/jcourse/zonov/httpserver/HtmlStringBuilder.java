@@ -11,8 +11,6 @@ public class HtmlStringBuilder {
         StringBuffer stringBuffer = new StringBuffer();
         String filePath = file.getPath();
         String fileName = file.getName();
-        System.out.println("String gen. filePath: " + filePath);
-        System.out.println("String gen. fileName: " + fileName);
 
         stringBuffer
                 .append("<tr>" + "\n")
