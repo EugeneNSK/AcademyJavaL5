@@ -46,7 +46,7 @@ public class Client3 implements Runnable{
 //                    System.out.println("HEAD command from WebClient");
                     break;
                 default :
-                   StreamWriter.write(out, "501 Not Implemented");
+                   StreamWriter.write(out, "501 Not Implemented"); //пишем в поток ошибку 501
                     break;
             }
 
