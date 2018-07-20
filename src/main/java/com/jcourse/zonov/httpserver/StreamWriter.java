@@ -9,10 +9,10 @@ import java.nio.file.Files;
 public class StreamWriter {
 
 
-    public static void write (OutputStream out, String s){
+    public static void write (OutputStream out, String errName){
 
         try {
-            out.write(("HTTP/1.0 " + s +"\r\n").getBytes());
+            out.write(("HTTP/1.0 " + errName +"\r\n").getBytes());
             out.write(("Content-Type: text/html;charset=utf-8\r\n").getBytes());
             out.write(("Content-Length: 230\r\n").getBytes());
             out.write(("Connection: Closed\r\n").getBytes());
