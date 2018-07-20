@@ -9,12 +9,12 @@ public class HtmlBuilder {
     public static StringBuffer toHtmlFile(List<File> list) throws IOException {
 
         String localDir = list.get(0).getParent();
-        System.out.println("localDir: " + localDir);
+//        System.out.println("localDir: " + localDir);
 
         String parentDir;
         if (list.get(0).getParentFile().getParent()!=null) {
             parentDir = list.get(0).getParentFile().getParent();
-            System.out.println("parentDir: " + parentDir);
+//            System.out.println("parentDir: " + parentDir);
         }
         else {
             parentDir = localDir;
@@ -23,9 +23,6 @@ public class HtmlBuilder {
 
         File file = new File(localDir,"index.html");
         StringBuffer sb = new StringBuffer();
-
-//        if (!file.exists()){
-//            System.out.println("файла не существует, генерируем");
 
             try (Writer out = new OutputStreamWriter(new FileOutputStream(file),"UTF-8")) {
 
@@ -59,19 +56,11 @@ public class HtmlBuilder {
                 sb.append("</body>" + "\n");
                 sb.append("</html>" + "\n");
                 out.write(sb.toString());
-//            sb.setLength(0);
 
                 return sb;
             }
 
         }
-//        else {
-//            System.out.println("Файл существует, генерации не будет");
-//            return sb.delete(0,sb.length());
-//        }
-//
-//    }
-
 }
 
 

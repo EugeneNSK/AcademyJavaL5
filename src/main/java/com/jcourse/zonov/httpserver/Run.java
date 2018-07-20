@@ -12,7 +12,7 @@ public class Run {
 
         while(true){
             Socket clientS = s.accept();
-            new Thread(new Client2(clientS), "client thread").start();
+            new Thread(new Client3(clientS), "client thread").start();
         }
 
     }
